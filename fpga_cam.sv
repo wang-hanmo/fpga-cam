@@ -4,7 +4,7 @@ module fpga_cam
    parameter                    WIDTH = 36,     // CAM width
    parameter                    L = 4,          // vertical partition
    parameter                    N = 4,          // horizontal partition
-   parameter                    TYPE = "LUTRAM"
+   parameter                    TYPE = "FF"
 )( 
     input  logic                        clk,    // clock
     input  logic                        rst_n,  // reset
@@ -32,7 +32,6 @@ module fpga_cam
             wPatt_r <= '0;
             wMask_r <= '0; 
             mPatt_r <= '0;
-            match_r <= 1'b0; 
         end
         else begin
             wEn_r <= wEn;
@@ -40,7 +39,6 @@ module fpga_cam
             wPatt_r <= wPatt;
             wMask_r <= wMask; 
             mPatt_r <= mPatt;
-            match_r <= match; 
         end
     end
 
@@ -103,9 +101,11 @@ module fpga_cam
     always_ff @ (posedge clk) begin
         if(!rst_n) begin
             mAddr <= '0;
+            match <= 1'b0; 
         end
         else begin
             mAddr <= mAddr_r;
+            match <= match_r; 
         end
     end
 

@@ -14,6 +14,11 @@ module bm_18
     output logic        cout
 );
     logic doa, dob, doc, dod;
+    logic addra_sel, addrb_sel, addrc_sel;
+
+    assign addra_sel = we ? addrd : addra;
+    assign addrb_sel = we ? addrd : addrb;
+    assign addrc_sel = we ? addrd : addrc;
 
     lutram #(
         .Depth(64),
@@ -21,8 +26,7 @@ module bm_18
     ) inst_luta (
         .clk(clk),
         .wen(we),
-        .raddr(addra),
-        .waddr(addrd),
+        .addr(addra_sel),
         .din(dia), 
         .dout(doa) 
     );
@@ -32,8 +36,7 @@ module bm_18
     ) inst_lutb (
         .clk(clk),
         .wen(we),
-        .raddr(addrb),
-        .waddr(addrd),
+        .addr(addrb_sel),
         .din(dib), 
         .dout(dob) 
     );
@@ -43,8 +46,7 @@ module bm_18
     ) inst_lutc (
         .clk(clk),
         .wen(we),
-        .raddr(addrc),
-        .waddr(addrd),
+        .addr(addrc_sel),
         .din(dic), 
         .dout(doc) 
     );
@@ -54,8 +56,7 @@ module bm_18
     ) inst_lutd (
         .clk(clk),
         .wen(we),
-        .raddr(addrd),
-        .waddr(addrd),
+        .addr(addrd),
         .din(did), 
         .dout(dod) 
     );

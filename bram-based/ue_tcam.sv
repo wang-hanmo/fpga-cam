@@ -50,7 +50,7 @@ module ue_tcam
     for (genvar l = 0; l < N; l++) begin : sram_unit_input
         assign hp_addr[l] = wEn ? wPatt[(l+1)*SW_WIDTH-1 : l*SW_WIDTH] : mPatt[(l+1)*SW_WIDTH-1 : l*SW_WIDTH];
     end
-    assign hp_din = 1 << wAddr[$clog2(L)-1 : 0];
+    assign hp_din = 1 << wAddr[$clog2(SA_DEPTH)-1 : 0];
 
     // output generation
     always_comb begin
