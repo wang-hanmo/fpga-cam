@@ -10,7 +10,7 @@ module ue_tcam
     input  logic                        wEn,    // write enable
     input  logic[$clog2(DEPTH)-1 : 0]   wAddr,  // write address
     input  logic[WIDTH-1 : 0]           wPatt,  // write pattern
-    input  logic[WIDTH-1 : 0]           wMask,  // pattern mask    
+    input  logic[DEPTH/L-1 : 0]         wKbit,  // Address coding
     input  logic[WIDTH-1 : 0]           mPatt,  // patern to match
     output logic                        match,  // match indicator 
     output logic[$clog2(DEPTH)-1 : 0]   mAddr   // matched address
@@ -45,12 +45,13 @@ module ue_tcam
 
     // input generation
     for (genvar k = 0; k < L; k++) begin : layer_input
-        assign hp_wen[k] = wEn & (wAddr[$clog2(DEPTH)-1: $clog2(L)] == k);
+        assign hp_wen[k] = wEn & (wAddr[$clog2(DEPTH)-1: $clog2(SA_DEPTH)] == k);
     end
     for (genvar l = 0; l < N; l++) begin : sram_unit_input
         assign hp_addr[l] = wEn ? wPatt[(l+1)*SW_WIDTH-1 : l*SW_WIDTH] : mPatt[(l+1)*SW_WIDTH-1 : l*SW_WIDTH];
     end
-    assign hp_din = 1 << wAddr[$clog2(SA_DEPTH)-1 : 0];
+    // assign hp_din = 1 << wAddr[$clog2(SA_DEPTH)-1 : 0];
+    assign hp_din = wKbit;
 
     // output generation
     always_comb begin

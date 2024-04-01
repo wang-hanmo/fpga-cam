@@ -14,7 +14,9 @@ module bm_18
     output logic        cout
 );
     logic doa, dob, doc, dod;
-    logic addra_sel, addrb_sel, addrc_sel;
+    logic [5:0] addra_sel;
+    logic [5:0] addrb_sel;
+    logic [5:0] addrc_sel;
 
     assign addra_sel = we ? addrd : addra;
     assign addrb_sel = we ? addrd : addrb;

@@ -4,14 +4,15 @@ module fpga_cam
    parameter                    WIDTH = 36,     // CAM width
    parameter                    L = 4,          // vertical partition
    parameter                    N = 4,          // horizontal partition
-   parameter                    TYPE = "FF"
+   parameter                    TYPE = "BRAM"
 )( 
     input  logic                        clk,    // clock
     input  logic                        rst_n,  // reset
     input  logic                        wEn,    // write enable
     input  logic[$clog2(DEPTH)-1 : 0]   wAddr,  // write address
     input  logic[WIDTH-1 : 0]           wPatt,  // write pattern
-    input  logic[WIDTH-1 : 0]           wMask,  // pattern mask    
+    input  logic[WIDTH-1 : 0]           wMask,  // pattern mask (only for G-AETCAM)
+    input  logic[DEPTH/L-1 : 0]         wKbit,  // Address coding (only for UE-TCAM)
     input  logic[WIDTH-1 : 0]           mPatt,  // patern to match
     output logic                        match,  // match indicator 
     output logic[$clog2(DEPTH)-1 : 0]   mAddr   // matched address
@@ -20,6 +21,7 @@ module fpga_cam
     logic[$clog2(DEPTH)-1 : 0]   wAddr_r;
     logic[WIDTH-1 : 0]           wPatt_r;
     logic[WIDTH-1 : 0]           wMask_r; 
+    logic[DEPTH/L-1 : 0]         wKbit_r;
     logic[WIDTH-1 : 0]           mPatt_r;
     logic                        match_r; 
     logic[$clog2(DEPTH)-1 : 0]   mAddr_r;
@@ -31,6 +33,7 @@ module fpga_cam
             wAddr_r <= '0;
             wPatt_r <= '0;
             wMask_r <= '0; 
+            wKbit_r <= '0;
             mPatt_r <= '0;
         end
         else begin
@@ -38,6 +41,7 @@ module fpga_cam
             wAddr_r <= wAddr;
             wPatt_r <= wPatt;
             wMask_r <= wMask; 
+            wKbit_r <= wKbit;
             mPatt_r <= mPatt;
         end
     end
@@ -56,7 +60,7 @@ module fpga_cam
                 .wEn(wEn_r),
                 .wAddr(wAddr_r),
                 .wPatt(wPatt_r),
-                .wMask(wMask_r), 
+                .wKbit(wKbit_r),
                 .mPatt(mPatt_r),
                 .match(match_r), 
                 .mAddr(mAddr_r)
@@ -72,7 +76,6 @@ module fpga_cam
                 .wEn(wEn_r),
                 .wAddr(wAddr_r),
                 .wPatt(wPatt_r),
-                .wMask(wMask_r), 
                 .mPatt(mPatt_r),
                 .match(match_r), 
                 .mAddr(mAddr_r)

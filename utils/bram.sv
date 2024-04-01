@@ -36,7 +36,7 @@ module bram
         .addra(addr),
         .dina(din),
         .clka(clk),
-        .wea(we),
+        .wea(wen),
         .ena(en),
         .rsta(1'b0),
         .regcea(1'b1),
@@ -61,7 +61,7 @@ module xilinx_single_port_ram_read_first #(
   input regcea,                         // Output register enable
   output [RAM_WIDTH-1:0] douta          // RAM output data
 );
-
+  (* ram_style="block" *) 
   reg [RAM_WIDTH-1:0] BRAM [RAM_DEPTH-1:0];
   reg [RAM_WIDTH-1:0] ram_data = {RAM_WIDTH{1'b0}};
 

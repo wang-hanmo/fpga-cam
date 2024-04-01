@@ -8,7 +8,6 @@ module dure_tcam
     input  logic                        wEn,    // write enable
     input  logic[$clog2(DEPTH)-1 : 0]   wAddr,  // write address
     input  logic[WIDTH-1 : 0]           wPatt,  // write pattern
-    input  logic[WIDTH-1 : 0]           wMask,  // pattern mask    
     input  logic[WIDTH-1 : 0]           mPatt,  // patern to match
     output logic                        match,  // match indicator 
     output logic[$clog2(DEPTH)-1 : 0]   mAddr   // matched address
