@@ -4,4 +4,4 @@
 #set_property IOSTANDARD LVCMOS33 [get_ports clk]
 
 # create_clock -period 20.000 -name clk -waveform {0.000 10.000} [get_ports clk]
-create_clock -period 5.900 -name clk -waveform {0.000 2.950} [get_ports clk]
+create_clock -period 4.500 -name clk -waveform {0.000 2.250} [get_ports clk]
